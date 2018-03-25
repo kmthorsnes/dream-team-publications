@@ -15,7 +15,7 @@ Feature: A user can have different roles with different capabilities
       | name    |
       | Fashion |
 
-    And the following articles exist
+    And the following articles exist 
       | title              | body                      |
       | Jade loves cookies | Brownies, I love Brownies |
 
