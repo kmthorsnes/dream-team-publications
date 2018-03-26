@@ -7,7 +7,6 @@ class ArticlesController < ApplicationController
   end
 
   def show
-    @article = Article.find_by(id: params[:id])
     @categories = Category.all
     authorize @article
   end
@@ -16,6 +15,7 @@ class ArticlesController < ApplicationController
     params[:article][:categories].shift
     @article = Article.new(article_params)
     authorize @article
+    @article.image.attach(params[:article][:image])
     add_categories_to_article
     if @article.save
       flash[:success] = 'Article successfully created'
@@ -36,6 +36,7 @@ class ArticlesController < ApplicationController
   def update
     authorize @article
     params[:article][:categories].shift
+    @article.image.attach(params[:article][:image]) if params[:article][:image]
     add_categories_to_article
     if @article.update(article_params)
       flash[:success] = 'Article successfully updated'
