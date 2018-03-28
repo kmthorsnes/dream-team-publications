@@ -1,17 +1,53 @@
 require 'rails_helper'
 
 RSpec.describe Api::V0::ArticlesController, type: :request do
-  let!(:article) { FactoryBot.create(:article) }
+  let!(:article) { create(:article) }
+  describe 'GET /v0/articles' do
+    let(:document) { JSON.parse(response.body) }
+    let(:object) { document['data'].first }
 
-  it 'returns a specific article' do
-    binding.pry
-    get "/api/v0/articles/#{article.id}"
-    listing = JSON.parse(response.body)['data'][0]['attributes']
-    expect(JSON.parse(response.body)['data'][0]['type']).to eq 'articles'
-    expect(listing['title']). to eq article.title
-    expect(listing['body']). to eq article.body
-    expect(listing['image']['name']). to eq article.image.name
+    before do
+      get '/api/v0/articles'
+    end
+
+    it 'has a title' do
+      expect(object).to have_attribute(:title)
+    end
+
+    it 'has a body' do
+      expect(object).to have_attribute(:body)
+    end
+
+    it 'has a image' do
+      expect(object).to have_attribute(:image)
+    end
+
+    it 'has a category' do
+      expect(object).to have_attribute(:categories)
+    end
+  end
+
+  describe 'GET /v0/articles/id' do
+    let(:document) { JSON.parse(response.body) }
+    let(:object) { document['data'] }
+    before do
+      get "/api/v0/articles/#{article.id}"
+    end
+
+    it 'has a title' do
+      expect(object).to have_attribute(:title)
+    end
+
+    it 'has a body' do
+      expect(object).to have_attribute(:body)
+    end
+
+    it 'has a image' do
+      expect(object).to have_attribute(:image)
+    end
+
+    it 'has a category' do
+      expect(object).to have_attribute(:categories)
+    end
   end
 end
-
-    # get "/api/v0/articles/#{article.id}"
